@@ -50,7 +50,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.github.kevintorch"
                 artifactId = "carouselAdapter"
-                version = "1.0.0"
+                version = "1.0.1"
 
                 from(components["release"])
             }
