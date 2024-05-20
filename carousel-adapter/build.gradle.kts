@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -41,4 +42,18 @@ dependencies {
     implementation(libs.kandroid.ktx)
     implementation(libs.material)
     implementation(libs.glide)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            register<MavenPublication>("release") {
+                groupId = "com.github.kevintorch"
+                artifactId = "carouselAdapter"
+                version = "1.0.0"
+
+                from(components["release"])
+            }
+        }
+    }
 }
