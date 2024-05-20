@@ -3,6 +3,8 @@ Ready to use material 3 carousel adaper for recycler view (based on M3 Carousel)
 
 Latest Version 👉  [![](https://jitpack.io/v/kevintorch/CarouselAdapter.svg)](https://jitpack.io/#kevintorch/CarouselAdapter)
 
+![](/screenshots/demo.mov)
+
 ### Installation
 
 Step 1. Add the JitPack repository to your build file
