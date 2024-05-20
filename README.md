@@ -4,7 +4,7 @@ Ready to use material 3 carousel adaper for recycler view (based on M3 Carousel)
 Latest Version 👉  [![](https://jitpack.io/v/kevintorch/CarouselAdapter.svg)](https://jitpack.io/#kevintorch/CarouselAdapter)
 
 
-# Demo
+## Demo
 
 https://github.com/kevintorch/CarouselAdapter/assets/36185881/f43f7410-c5b3-442c-9994-287034b528ff
 
