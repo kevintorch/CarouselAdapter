@@ -11,7 +11,7 @@ import com.bumptech.glide.request.target.Target
 import java.io.File
 
 @JvmOverloads
-fun ImageView.load(
+internal fun ImageView.load(
     uri: Uri? = null,
     url: String? = null,
     file: File? = null,
