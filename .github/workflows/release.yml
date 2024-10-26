@@ -1,0 +1,32 @@
+name: JitPack Release Automation
+
+on:
+  push:
+    tags:
+      - 'v*'     # Triggers on any tag starting with 'v'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Build library
+        run: ./gradlew clean assembleRelease
+
+      - name: Trigger JitPack build
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_SECRET }}
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          curl -X POST https://jitpack.io/api/builds/<owner>/<repo>/commits/$VERSION \
+            -H "Authorization: token $DEPLOY_SECRET"
