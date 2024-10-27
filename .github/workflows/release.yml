@@ -24,18 +24,20 @@ jobs:
         run: ./gradlew clean assembleRelease
 
       - name: Trigger JitPack build
+        id: jitpack
         env:
           DEPLOY_SECRET: ${{ secrets.DEPLOY_SECRET }}
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          curl -X POST https://jitpack.io/api/builds/<owner>/<repo>/commits/$VERSION \
+          echo "Triggering JitPack build for version: $VERSION"
+          curl -X POST https://jitpack.io/api/builds/kevintorch/CarouselAdapter/commits/$VERSION \
             -H "Authorization: token $DEPLOY_SECRET"
 
       - name: Check JitPack Build Status
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           echo "Checking JitPack build status for version: $VERSION"
-          status=$(curl -s -H "Authorization: token ${{ secrets.DEPLOY_SECRET }}" https://jitpack.io/api/builds/<owner>/<repo>/commits/$VERSION | jq -r '.status')
+          status=$(curl -s -H "Authorization: token ${{ secrets.DEPLOY_SECRET }}" https://jitpack.io/api/builds/kevintorch/CarouselAdapter/commits/$VERSION | jq -r '.status')
           echo "JitPack Build Status: $status"
           if [ "$status" != "SUCCESS" ]; then
             echo "JitPack build failed, skipping release creation."
