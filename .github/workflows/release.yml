@@ -30,3 +30,26 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/}
           curl -X POST https://jitpack.io/api/builds/<owner>/<repo>/commits/$VERSION \
             -H "Authorization: token $DEPLOY_SECRET"
+
+      - name: Check JitPack Build Status
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "Checking JitPack build status for version: $VERSION"
+          status=$(curl -s -H "Authorization: token ${{ secrets.DEPLOY_SECRET }}" https://jitpack.io/api/builds/<owner>/<repo>/commits/$VERSION | jq -r '.status')
+          echo "JitPack Build Status: $status"
+          if [ "$status" != "SUCCESS" ]; then
+            echo "JitPack build failed, skipping release creation."
+            exit 1
+          fi
+
+      - name: Create Release
+        id: create_release
+        if: success()  # Only run if the previous step was successful
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Use the tag name from the push event
+          release_name: ${{ github.ref }}  # Name for the release
+          body: "This release includes changes from tag ${{ github.ref }}"
+          files: ./build/outputs/aar/*.aar  # Adjust based on your build output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub Actions
