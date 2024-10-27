@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        carouselAdapter.setStrategy(CarouselStrategy.Hero)
+        carouselAdapter.setStrategy(CarouselStrategy.FullScreen)
         carouselAdapter.attachToRecyclerView(recyclerView)
 
         val imageItems = images.mapIndexed { i, it -> ImageItem(it, "Image $i") }

@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselLayoutManager.ALIGNMENT_CENTER
-import com.google.android.material.carousel.CarouselLayoutManager.ALIGNMENT_START
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.FullScreenCarouselStrategy
 import com.google.android.material.carousel.HeroCarouselStrategy
@@ -38,7 +36,6 @@ internal class ImageItemDiffUtilCallback : DiffUtil.ItemCallback<ImageItem>() {
     override fun areContentsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
         return oldItem == newItem
     }
-
 }
 
 enum class CarouselStrategy {
@@ -47,24 +44,23 @@ enum class CarouselStrategy {
     Hero,
 }
 
-@IntDef(value = [CarouselLayoutManager.VERTICAL, CarouselLayoutManager.HORIZONTAL])
-annotation class Orientation {}
-
-@IntDef(value = [ALIGNMENT_START, ALIGNMENT_CENTER])
-annotation class Alignment {}
-
 class CarouselAdapter : ListAdapter<ImageItem, CarouselAdapter.CarouselViewHolder>(
     ImageItemDiffUtilCallback()
 ), AdapterItemListener {
 
     companion object {
-        @JvmStatic
-        val ALIGNMENT_START = 0
+        const val ORIENTATION_VERTICAL = CarouselLayoutManager.VERTICAL
+        const val ORIENTATION_HORIZONTAL = CarouselLayoutManager.HORIZONTAL
 
-        @JvmStatic
-        val ALIGNMENT_CENTER = 1
+        const val ALIGNMENT_START = CarouselLayoutManager.ALIGNMENT_START
+        const val ALIGNMENT_CENTER = CarouselLayoutManager.ALIGNMENT_CENTER
     }
 
+    @IntDef(value = [CarouselLayoutManager.VERTICAL, CarouselLayoutManager.HORIZONTAL])
+    annotation class Orientation
+
+    @IntDef(value = [CarouselLayoutManager.ALIGNMENT_START, CarouselLayoutManager.ALIGNMENT_CENTER])
+    annotation class Alignment
 
     private val carouselLayoutManager = CarouselLayoutManager()
     private val carouselSnapHelper = CarouselSnapHelper()
@@ -105,9 +101,7 @@ class CarouselAdapter : ListAdapter<ImageItem, CarouselAdapter.CarouselViewHolde
     fun attachToRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = this
         if (recyclerView.layoutManager !is CarouselLayoutManager) {
-            recyclerView.layoutManager = carouselLayoutManager.apply {
-                setCarouselStrategy(HeroCarouselStrategy())
-            }
+            recyclerView.layoutManager = carouselLayoutManager
         }
         carouselSnapHelper.attachToRecyclerView(recyclerView)
     }
